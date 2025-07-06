@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: chiro-postgres
+    environment:
+      POSTGRES_DB: chirodb
+      POSTGRES_USER: chirouser
+      POSTGRES_PASSWORD: chiropass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: chiro-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: chiro@wilduraantjes.be
+      PGADMIN_DEFAULT_PASSWORD: adminpass
+    ports:
+      - "8081:80"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
